@@ -1,3 +1,3 @@
-from operations.ui_operations import make_ui
+from operations.ui_operations import MainGUI
 
-make_ui()
+main = MainGUI()

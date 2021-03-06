@@ -1,29 +1,35 @@
 import tkinter as tk
-from operations.file_operations import open_file
+from operations.file_operations import AudioData
 
 
-audio_data = None
+class MainGUI:
 
+    def __init__(self):
+        self.window = tk.Tk()
+        self.audio_data = AudioData()
+        self.__audio_data_record = []
 
-def make_ui():
-    window = tk.Tk()
-    make_open_file_button(window)
-    window.mainloop()
+        self.make_open_file_button()
+        self.window.mainloop()
 
+    # Makes a button which, when pressed, opens a window to select an audio file.
+    # When an audio file is selected, it then parses the audio file and prints out its data.
+    def make_open_file_button(self):
+        open_button = tk.Button(self.window, text="Open File", command=lambda: self.__open_button_helper())
+        open_button.pack()
 
-# Makes a button which, when pressed, opens a window to select an audio file.
-# When an audio file is selected, it then parses the audio file and prints out its data.
-def make_open_file_button(window):
-    open_button = tk.Button(window, text="Open File", command=lambda: print_data(open_file()))
-    open_button.pack()
+    # A helper function which handles what happens when the 'open file' button is pressed.
+    def __open_button_helper(self):
+        if self.audio_data.audio_segment is not None:
+            self.__audio_data_record.append(self.audio_data)
+            print(self.__audio_data_record)
+        self.audio_data.open_file()
+        self.__print_data()
 
-
-def print_data(data):
-    global audio_data
-    audio_data = data
-    if audio_data is not None:
-        print(interpret_dr(audio_data.dynamic_range))
-        print(interpret_score(audio_data.dynamic_range_score))
+    # Will probably delete later. Prints things.
+    def __print_data(self):
+        print(interpret_dr(self.audio_data.dynamic_range))
+        print(interpret_score(self.audio_data.dynamic_range_score))
 
 
 # Returns a string which interprets the dynamic range it is given.
@@ -52,7 +58,7 @@ def __score_assessment(score):
         return "excellent"
 
 
-# Private helper. Returns a string which describes the quality of the audio file based on its dynamic range.
+# Returns a string which describes the quality of the audio file based on its dynamic range.
 def __dr_assessment(dynamic_range):
     if 100 <= dynamic_range <= 144:
         return "Hi-Resolution Audio (24-bit)"
