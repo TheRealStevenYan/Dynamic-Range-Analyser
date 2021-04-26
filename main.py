@@ -1,3 +1,4 @@
 from operations.ui_operations import MainGUI
 
-main = MainGUI()
+if __name__ == "__main__":
+    main = MainGUI()
