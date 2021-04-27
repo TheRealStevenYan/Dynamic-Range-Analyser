@@ -7,13 +7,13 @@ Dynamic range calculation is done through the formula given here: https://en.wik
 ### WHAT'S DONE:
 - Dynamic range calculation
 - Score calculation
-- GUI (a framework atleast)
-- File loading
+- GUI (a basic framework at least)
+- PySQLite Database Persistence
 
 ### TODO:
 - Finish the GUI -> Add colours to text, fix padding, etc.
-- Persistence (saving scores)
 - Waveform grapher to visualise dynamic range
+- Deletion from database by clicking a value in the table
 ___
 ## What is Dynamic Range? Why do we care about it?
 In an audio file, dynamic range describes the difference in volume between the loudest parts of a track, and the quietest parts.
