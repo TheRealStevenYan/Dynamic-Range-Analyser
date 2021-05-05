@@ -31,12 +31,24 @@ class Table(tk.Frame):
 
     # Deletes an entry from the table gui and the database when an entry is double clicked.
     def double_click_delete(self, arg):
-        cur_sel = self.table.focus()
-        cur_item = self.table.item(cur_sel)
-        cur_item_name = cur_item.get('values')[0]
-        log = AudioDataLog()
-        log.db_delete(cur_item_name)
-        display_database()
+        try:
+            cur_sel = self.table.focus()
+            cur_item = self.table.item(cur_sel)
+            cur_item_name = cur_item.get('values')[0]
+            log = AudioDataLog()
+            log.db_delete(cur_item_name)
+            display_database()
+        except IndexError as e:
+            None
+
+
+# Initialises the window representing the program. a
+def init_window():
+    window.title("Dynamic Range Analyser")
+    window.resizable(False, False)
+    window.geometry("800x397")
+    photo = tk.PhotoImage("images/icon.ico")
+    window.iconbitmap(False, photo)
 
 
 # Makes a button which, when pressed, opens a window to select an audio file.
@@ -89,7 +101,7 @@ def __open_button_helper():
 
 # Private. Prints the file name and scores of everything onto a tkinter text box.
 def __print_scores():
-    output_box.insert(tk.INSERT, audio_data.file_name)
+    output_box.insert(tk.INSERT, '{name}\n'.format(name=audio_data.file_name))
     output_box.insert(tk.INSERT, __interpret_dr(audio_data.dynamic_range))
     output_box.insert(tk.INSERT, __interpret_score(audio_data.dynamic_range_score))
 
@@ -105,8 +117,7 @@ def __interpret_score(score):
 
 
 window = tk.Tk()
-window.resizable(False, False)
-window.geometry("800x397")
+init_window()
 audio_data = AudioData()
 output_box = tk.Text(window, width=30, height=10)
 audio_data_record = []

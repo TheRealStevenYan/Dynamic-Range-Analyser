@@ -15,25 +15,24 @@ class AudioData:
         self.dynamic_range_score = 0
         self.audio_segment = None
         self.array_of_samples = []
-        self.file_path = ""
         self.file_name = ""
 
     # Opens a file, and initialises all the attributes in the AudioData class based on the file.
     def open_file(self):
-        self.file_path = tk.filedialog.askopenfilename()
-        self.file_name = os.path.basename(self.file_path)
         try:
-            self.__get_audio_segment()
+            file_path = tk.filedialog.askopenfilename()
+            self.__get_audio_segment(file_path)
             self.__calculate_data()
+            self.file_name = os.path.basename(file_path)
         except Exception as e:
             print(e)
 
     # Accepts a path to an input file, and then returns it as an AudioSegment.
     # Throws exception if not found. Remember to catch this exception.
-    def __get_audio_segment(self):
-        file_ext = os.path.splitext(self.file_path)[1]
+    def __get_audio_segment(self, file_path):
+        file_ext = os.path.splitext(file_path)[1]
         file_ext = file_ext[1:len(file_ext)]
-        self.audio_segment = AudioSegment.from_file(self.file_path, format=file_ext)
+        self.audio_segment = AudioSegment.from_file(file_path, format=file_ext)
 
     # Helper function.
     # Calculates the required data (dynamic range etc) from the given array of samples.
@@ -57,7 +56,6 @@ class AudioDataLog:
 
     def db_connect(self):
         database_abs_path = os.path.abspath("database.db")
-        print(database_abs_path)
         try:
             self.db_conn = sqlite3.connect(database_abs_path)
         except sqlite3.Error as e:
